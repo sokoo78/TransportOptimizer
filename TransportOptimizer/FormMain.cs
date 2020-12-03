@@ -102,7 +102,6 @@ namespace TransportOptimizer
         private string[,] ReadGridIntoArray()
         {
             string[,] data = new string[dataGridViewProblem.Rows.Count, dataGridViewProblem.Columns.Count];
-
             for (int i = 0; i < data.GetLength(0); i++)
                 for (int j = 0; j < data.GetLength(1); j++)
                     data[i, j] = dataGridViewProblem.Rows[i].Cells[j].Value?.ToString();
@@ -110,6 +109,12 @@ namespace TransportOptimizer
         }
 
         private void DisplayResult(Result result)
+        {
+            UpdateResultPanel(result);
+            UpdateSolutionGrid(result);
+        }
+
+        private void UpdateResultPanel(Result result)
         {
             switch (result.Status)
             {
@@ -121,7 +126,16 @@ namespace TransportOptimizer
             textBoxSolution.Text = result.Status;
             labelError.Text = result.Error;
             textBoxCost.Text = result.Cost.ToString();
+        }
 
+        private void UpdateSolutionGrid(Result result)
+        {
+            DrawSolutionGrid(result);
+            UpdateSolutionGridHeaderTexts();
+        }
+
+        private void DrawSolutionGrid(Result result)
+        {
             int height = result.Solution.Length;
             int width = result.Solution[0].Length;
             dataGridViewSolution.ColumnCount = width;
@@ -133,7 +147,10 @@ namespace TransportOptimizer
                     row.Cells[c].Value = result.Solution[r][c];
                 dataGridViewSolution.Rows.Add(row);
             }
+        }
 
+        private void UpdateSolutionGridHeaderTexts()
+        {
             for (int i = 0; i < dataGridViewSolution.RowCount; i++)
                 dataGridViewSolution.Rows[i].HeaderCell.Value = ($"S{i + 1}");
 
@@ -141,13 +158,13 @@ namespace TransportOptimizer
                 dataGridViewSolution.Columns[i].HeaderCell.Value = ($"D{i + 1}");
 
             var problemLastRowHeaderName = dataGridViewProblem.Rows[dataGridViewProblem.Rows.Count - 2].HeaderCell.Value.ToString();
-            if (problemLastRowHeaderName.Equals("Sdummy"))            
+            if (problemLastRowHeaderName.Equals("Sdummy"))
                 dataGridViewSolution.Rows[dataGridViewSolution.Rows.Count - 1].HeaderCell.Value = problemLastRowHeaderName;
 
             var problemLastColHeaderName = dataGridViewProblem.Columns[dataGridViewProblem.Columns.Count - 2].HeaderCell.Value.ToString();
             if (problemLastColHeaderName.Equals("Ddummy"))
                 dataGridViewSolution.Columns[dataGridViewSolution.Columns.Count - 1].HeaderCell.Value = problemLastColHeaderName;
-        }
+        }        
 
         private void NumUpDownShopCount_ValueChanged(object sender, EventArgs e)
         {
