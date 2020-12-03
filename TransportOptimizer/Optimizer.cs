@@ -11,10 +11,7 @@ namespace TransportOptimizer
         public Optimizer(string[,] data)
         {
             _problem = new Problem(data);
-        }
-
-        public int GetNumberOfSuppliers() => _problem.NumberOfSuppliers;
-        public int GetNumberOfConsumers() => _problem.NumberOfConsumers;
+        }        
 
         public Result Solve()
         {
