@@ -45,7 +45,6 @@ namespace TransportOptimizer
 
         private void SetCostMatrix(string[,] data)
         {
-            //InitCostMatrix();
             CostMatrix = new int[NumberOfSuppliers][];        // Set number of rows
             for (int row = 0; row < NumberOfSuppliers; row++)
             {
